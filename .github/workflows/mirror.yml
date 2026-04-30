@@ -1,0 +1,28 @@
+name: Mirror to Personal Account
+
+on:
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_REPO_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Arif Adnan"
+          git config --global user.email "arifahamedadnan@gmail.com"
+
+      - name: Push to Personal Repo
+        env:
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
+        run: |
+          git remote add personal https://arifadnan05:${PERSONAL_TOKEN}@github.com/arifadnan05/shadimate-client.git
+          git push personal --all --force
+          git push personal --tags --force

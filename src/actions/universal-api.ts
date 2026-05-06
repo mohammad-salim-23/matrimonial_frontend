@@ -14,6 +14,7 @@ export interface ApiResult<T = unknown> {
   data?: T;
   message?: string;
   unauthorized?: boolean;
+  retryAfter?: number; // ← 429 response-er hit delay
 }
 
 export async function universalApi<T = unknown>({
